@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
                 .nexthop = entry.nexthop, // big endian, means direct
                 .metric = entry.metric
               };
-              update(false, entry);
+              update(false, RTEntry);
               // idk how to print ???
               continue;
             }
@@ -203,7 +203,7 @@ int main(int argc, char *argv[]) {
           //return a ICMP Destination Network Unreachable to sender <----- how to do it ????
           macaddr_t dest_mac;
           HAL_ArpGetMacAddress(dest_if, nexthop, dest_mac);
-          int length = ICMPcodeDestNetworkUnreachable(dst_addr, src_addr);//???
+          int length = ICMPDestNetworkUnreachable(dst_addr, src_addr);//???
           HAL_SendIPPacket(dest_if, output, length, dest_mac);
         }
       }
