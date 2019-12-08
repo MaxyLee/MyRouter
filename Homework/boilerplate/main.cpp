@@ -28,8 +28,8 @@ uint8_t output[2048];
 // 1: 10.0.1.1
 // 2: 10.0.2.1
 // 3: 10.0.3.1
-// 你可以按需进行修改，注意端序
-in_addr_t addrs[N_IFACE_ON_BOARD] = {0x0100000a, 0x0101000a, 0x0102000a, 0x0103000a};
+// 你可以按需进行修改，注意端序 10.1.1.1
+in_addr_t addrs[N_IFACE_ON_BOARD] = {0x0101010a, 0x0201010a, 0x0102000a, 0x0103000a};
 
 void getIPChecksum(uint8_t* pac);
 int getUDPChecksum(uint8_t* pac);
