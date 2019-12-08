@@ -147,8 +147,21 @@ int main(int argc, char *argv[]) {
           for(int i = 0;i < rip.numEntries;i++) {
             RipEntry entry = rip.entries[i];
             uint32_t newMetirc = entry.metric + 1;
-            if(newMetirc > 16) {
+            if(newMetirc >= 16) {
               //delete this route
+              uint32_t len = 32;
+              uint32_t mask = entry.mask;
+              while((mask & 1) == 0) {
+                mask >> 1;
+                len--;
+              }
+              RoutingTableEntry RTEntry = {
+                .addr = entry.addr, // big endian
+                .len = len, // small endian
+                .if_index = 0, // small endian /////////////////////////////////////////////////////idk
+                .nexthop = entry.nexthop, // big endian, means direct
+                .metric = entry.metric
+              };
               update(false, entry);
               // idk how to print ???
               continue;
