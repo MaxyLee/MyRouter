@@ -104,7 +104,7 @@ bool query(uint32_t addr, uint32_t *nexthop, uint32_t *if_index) {
   return true;
 }
 
-void fillResp(const RipPacket *resp) {
+void fillResp(RipPacket *resp) {
   resp->numEntries = routers.size();
   resp->command = 2;
   for(int i = 0;i < routers.size();i++){

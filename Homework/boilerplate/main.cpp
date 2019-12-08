@@ -19,7 +19,7 @@ extern bool query(uint32_t addr, uint32_t *nexthop, uint32_t *if_index);
 extern bool forward(uint8_t *packet, size_t len);
 extern bool disassemble(const uint8_t *packet, uint32_t len, RipPacket *output);
 extern uint32_t assemble(const RipPacket *rip, uint8_t *buffer);
-extern void fillResp(const RipPacket* resp);
+extern void fillResp(RipPacket* resp);
 extern void updateRouterTable(RipEntry entry);
 
 uint8_t packet[2048];
