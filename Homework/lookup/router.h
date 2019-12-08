@@ -8,4 +8,3 @@ typedef struct {
     uint32_t metric;
 } RoutingTableEntry;
 
-std::vector<RoutingTableEntry> routers;

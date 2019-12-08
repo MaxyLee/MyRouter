@@ -22,7 +22,7 @@ using namespace std;
   你可以在全局变量中把路由表以一定的数据结构格式保存下来。
 */
 
-
+std::vector<RoutingTableEntry> routers;
 
 int getIndex(uint32_t addr, uint32_t len){
   int index = -1;
