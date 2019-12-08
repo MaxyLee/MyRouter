@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
         HAL_SendIPPacket(i, output, length, dst_mac);
       }
       
-      time = last_time;
+      last_time = time;
       printf("Timer\n");
     }
 
