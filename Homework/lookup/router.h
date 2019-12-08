@@ -1,0 +1,11 @@
+#include <stdint.h>
+#include <vector>
+typedef struct {
+    uint32_t addr;
+    uint32_t len;
+    uint32_t if_index;
+    uint32_t nexthop;
+    uint32_t metric;
+} RoutingTableEntry;
+
+std::vector<RoutingTableEntry> routers;
