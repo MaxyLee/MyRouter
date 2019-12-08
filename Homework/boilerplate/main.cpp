@@ -108,6 +108,7 @@ int main(int argc, char *argv[]) {
     uint8_t version = packet[0] >> 4;
     if(version != 4 && version != 6) {
       printf("Invalid version\n");
+      continue;
     }
 
     uint8_t TTL = packet[8];
