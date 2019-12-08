@@ -71,7 +71,8 @@ int main(int argc, char *argv[]) {
         for(int i = 0;i < routers.size();i++) { //router in routers
           int length = Response();
           int if_index = routers.at(i).if_index;
-          macaddr_t dst_mac = HAL_ArpGetMacAddress();
+          macaddr_t dst_mac;
+          HAL_ArpGetMacAddress(if_index, routers.at(i).nexthop, dst_mac);
           HAL_SendIPPacket(if_index, output, length, dst_mac);
         }
       }
@@ -137,9 +138,9 @@ int main(int argc, char *argv[]) {
       if (disassemble(packet, res, &rip)) {
         if (rip.command == 1) {
           // request
-          Response(dst_addr, src_addr, output);
+          int length = Response(dst_addr, src_addr, output);
           // send it back
-          HAL_SendIPPacket(if_index, output, rip_len + 20 + 8, src_mac);
+          HAL_SendIPPacket(if_index, output, length, src_mac);
         } else {
           // response
           // TODO: use query and update
@@ -188,7 +189,7 @@ int main(int argc, char *argv[]) {
           // not found
           //return a ICMP Destination Network Unreachable to sender <----- how to do it ????
           macaddr_t dest_mac;
-          HAL_ArpGetMacAddress(dest_if, nexthop, dest_mac)
+          HAL_ArpGetMacAddress(dest_if, nexthop, dest_mac);
           int length = ICMPcodeDestNetworkUnreachable(dst_addr, src_addr);//???
           HAL_SendIPPacket(dest_if, output, length, dest_mac);
         }
@@ -203,7 +204,7 @@ void getIPChecksum(uint8_t* pac) {
   int headLength = (pac[0] & 0xf) * 4;
   pac[10] = 0;
   pac[11] = 0;
-  for(i = 0;i < headLength;i++) {
+  for(int i = 0;i < headLength;i++) {
     if(i % 2 == 0) {
       IPchecksum += ((int)pac[i]) << 8;
     } else {
@@ -287,7 +288,7 @@ int ICMPTimeExceeded(in_addr_t src_addr, in_addr_t dst_addr) {
   for(int i = 0;i < 6;i++)
     output[22 + i] = 0x0;
   //source packet IP header and 8 bytes
-  memcpy(output + 20 + 8, packet, sizr_t(packetHeaderLength));
+  memcpy(output + 20 + 8, packet, size_t(packetHeaderLength));
 
   output[22] = 0;
   output[23] = 0;
@@ -319,7 +320,7 @@ int ICMPDestNetworkUnreachable(in_addr_t src_addr, in_addr_t dst_addr) {
   for(int i = 0;i < 6;i++)
     output[22 + i] = 0x0;
   //source packet IP header and 8 bytes
-  memcpy(output + 20 + 8, packet, sizr_t(packetHeaderLength));
+  memcpy(output + 20 + 8, packet, size_t(packetHeaderLength));
 
   output[22] = 0;
   output[23] = 0;
