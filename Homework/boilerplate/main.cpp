@@ -66,15 +66,21 @@ int main(int argc, char *argv[]) {
     uint64_t time = HAL_GetTicks();
     if (time > last_time + 30 * 1000) {
       // What to do? <----- send router table every 30 sec
-      if(routers.size() > 0) {
-        //////////////////////////////////////////////////////////////////////
-        for(int i = 0;i < routers.size();i++) { //router in routers
-          int length = Response();
-          int if_index = routers.at(i).if_index;
-          macaddr_t dst_mac;
-          HAL_ArpGetMacAddress(if_index, routers.at(i).nexthop, dst_mac);
-          HAL_SendIPPacket(if_index, output, length, dst_mac);
-        }
+      // if(routers.size() > 0) {
+      //   //////////////////////////////////////////////////////////////////////
+      //   for(int i = 0;i < routers.size();i++) { //router in routers
+      //     int length = Response();
+      //     int if_index = routers.at(i).if_index;
+      //     macaddr_t dst_mac;
+      //     HAL_ArpGetMacAddress(if_index, routers.at(i).nexthop, dst_mac);
+      //     HAL_SendIPPacket(if_index, output, length, dst_mac);
+      //   }
+      // }
+      for (uint32_t i = 0; i < N_IFACE_ON_BOARD;i++) {
+        int length = Response(addrs[i], 0xe0000009, output);
+        macaddr_t dst_mac;
+        HAL_ArpGetMacAddress(i, 0xe0000009, dst_mac);
+        HAL_SendIPPacket(i, output, length, dst_mac);
       }
       
       time = last_time;
