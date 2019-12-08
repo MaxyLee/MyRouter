@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 #define RIP_MAX_ENTRY 25
 typedef struct {
