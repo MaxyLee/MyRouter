@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
         HAL_SendIPPacket(i, output, length, dst_mac);
       }
       
-      time = last_time;
+      last_time = time;
       printf("Timer\n");
     }
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     }
     // res > 0
     uint8_t version = packet[0] >> 4;
-    if(version != 4 || version != 6) {
+    if(version != 4 && version != 6) {
       printf("Invalid version\n");
     }
 
