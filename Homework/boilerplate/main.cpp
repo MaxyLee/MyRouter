@@ -73,6 +73,9 @@ int main(int argc, char *argv[]) {
 			// send complete routing table to every interface
 			// ref. RFC2453 3.8
 			// multicast MAC for 224.0.0.9 is 01:00:5e:00:00:09
+			#ifdef DEBUG
+				printf("muliticast\n");
+			#endif
 			for (uint32_t i = 0; i < N_IFACE_ON_BOARD;i++) {
 				int length = Response(addrs[i], MulticastAddr, output);
 				macaddr_t dst_mac;
