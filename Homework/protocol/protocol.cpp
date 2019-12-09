@@ -46,7 +46,7 @@
  */
 bool disassemble(const uint8_t *packet, uint32_t len, RipPacket *output) {
   // TODO:
-  if((((int)packet[2])<<8)+packet[3]>len)
+  if((((int)packet[2]) << 8) + packet[3] > len)
     return false;
 
   if(packet[30] != 0 || packet[31] != 0)
