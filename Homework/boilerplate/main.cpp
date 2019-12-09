@@ -41,6 +41,7 @@ void IPHeader(in_addr_t src_addr, in_addr_t dst_addr, uint16_t totalLength, uint
 int ICMPTimeExceeded(in_addr_t src_addr, in_addr_t dst_addr);
 int ICMPDestNetworkUnreachable(in_addr_t src_addr, in_addr_t dst_addr);
 int Response(in_addr_t src_addr, in_addr_t dst_addr, uint8_t* pac);
+uint32_t reverse(uint32_t addr);
 
 int main(int argc, char *argv[]) {
 	int res = HAL_Init(1, addrs);
@@ -81,7 +82,7 @@ int main(int argc, char *argv[]) {
 				#ifdef DEBUG
 					printf("multicast from %x\n", addrs[i]);
 				#endif
-				int length = Response(addrs[i], MulticastAddr, output);
+				int length = Response(reverse(addrs[i]), reverse(MulticastAddr), output);
 				macaddr_t dst_mac;
 				HAL_ArpGetMacAddress(i, MulticastAddr, dst_mac);
 				HAL_SendIPPacket(i, output, length, dst_mac);
@@ -264,6 +265,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
   return 0;
+}
+
+uint32_t reverse(uint32_t addr) {
+	return ((addr & 0x000000ff) << 24) + ((addr & 0x0000ff00) << 8) + ((addr & 0x00ff0000) >> 8) + ((addr & 0xff000000) >> 24)
 }
 
 
