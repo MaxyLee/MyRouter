@@ -14,7 +14,7 @@
 #define ICMPcodeTimeExceeded 0
 #define ICMPtypeDestNetworkUnreachable 3
 #define ICMPcodeDestNetworkUnreachable 0
-#define MulticastAddr 0x090000e0
+#define MulticastAddr 0xe0000009
 
 extern bool validateIPChecksum(uint8_t *packet, size_t len);
 extern void update(bool insert, RoutingTableEntry entry);
