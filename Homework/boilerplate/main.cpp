@@ -268,7 +268,7 @@ int main(int argc, char *argv[]) {
 }
 
 uint32_t reverse(uint32_t addr) {
-	return ((addr & 0x000000ff) << 24) + ((addr & 0x0000ff00) << 8) + ((addr & 0x00ff0000) >> 8) + ((addr & 0xff000000) >> 24)
+	return ((addr & 0x000000ff) << 24) + ((addr & 0x0000ff00) << 8) + ((addr & 0x00ff0000) >> 8) + ((addr & 0xff000000) >> 24);
 }
 
 
