@@ -78,6 +78,9 @@ int main(int argc, char *argv[]) {
 				printf("muliticast\n");
 			#endif
 			for (uint32_t i = 0; i < N_IFACE_ON_BOARD;i++) {
+				#ifdef DEBUG
+					printf("multicast from %x\n", addrs[i]);
+				#endif
 				int length = Response(addrs[i], MulticastAddr, output);
 				macaddr_t dst_mac;
 				HAL_ArpGetMacAddress(i, MulticastAddr, dst_mac);
