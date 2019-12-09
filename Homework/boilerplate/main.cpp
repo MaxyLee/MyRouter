@@ -90,14 +90,26 @@ int main(int argc, char *argv[]) {
 		res = HAL_ReceiveIPPacket(mask, packet, sizeof(packet), src_mac,
 										dst_mac, 1000, &if_index);
 		if (res == HAL_ERR_EOF) {
+			#ifdef DEBUG
+				printf("res == HAL_ERR_EOF\n");
+			#endif
 			break;
 		} else if (res < 0) {
+			#ifdef DEBUG
+				printf("res < 0\n");
+			#endif
 			return res;
 		} else if (res == 0) {
 			// Timeout
+			#ifdef DEBUG
+				printf("res == 0\n");
+			#endif
 			continue;
 		} else if (res > sizeof(packet)) {
 			// packet is truncated, ignore it
+			#ifdef DEBUG
+				printf("res > sizeof(packet)\n");
+			#endif
 			continue;
 		}
 		// res > 0
@@ -129,6 +141,10 @@ int main(int argc, char *argv[]) {
 		src_addr = ((int)packet[12] << 24) + ((int)packet[13] << 16) + ((int)packet[14] << 8) + packet[15];
 		dst_addr = ((int)packet[16] << 24) + ((int)packet[17] << 16) + ((int)packet[18] << 8) + packet[19];
 
+		#ifdef DEBUG
+			printf("source address:%x\n destination address:%x\n", src_addr, dst_addr);
+		#endif
+
 		// 2. check whether dst is me
 		bool dst_is_me = false;
 		for (int i = 0; i < N_IFACE_ON_BOARD;i++) {
@@ -144,10 +160,6 @@ int main(int argc, char *argv[]) {
 				printf("multicast address\n");
 			#endif
 		}
-
-		#ifdef DEBUG
-			printf("source address:%x\n destination address:%x\n", src_addr, dst_addr);
-		#endif
 
 		if (dst_is_me) {
 			#ifdef DEBUG
