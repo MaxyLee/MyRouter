@@ -160,6 +160,7 @@ int main(int argc, char *argv[]) {
 
 		#ifdef DEBUG
 			printf("source address:%08x\ndestination address:%08x\n", src_addr, dst_addr);
+			printf("packet[19]:%02x\n",packet[19]);
 		#endif
 
 		// 2. check whether dst is me
