@@ -35,6 +35,8 @@ uint8_t output[2048];
 // 你可以按需进行修改，注意端序 10.1.1.1
 in_addr_t addrs[N_IFACE_ON_BOARD] = {0x0203a8c0, 0x0104a8c0, 0x0102000a, 0x0103000a};
 
+macaddr_t MulticastMac = {0x01, 0x00, 0x5e, 0x00, 0x00, 0x09}; //idk big endian or ... fuck
+
 void getIPChecksum(uint8_t* pac);
 int getUDPChecksum(uint8_t* pac);
 void IPHeader(in_addr_t src_addr, in_addr_t dst_addr, uint16_t totalLength, uint8_t protocol, uint8_t* pac);
@@ -83,9 +85,9 @@ int main(int argc, char *argv[]) {
 					printf("multicast from %x\n", addrs[i]);
 				#endif
 				int length = Response(reverse(addrs[i]), reverse(MulticastAddr), output);
-				macaddr_t dst_mac;
-				HAL_ArpGetMacAddress(i, MulticastAddr, dst_mac);
-				HAL_SendIPPacket(i, output, length, dst_mac);
+				// macaddr_t dst_mac;
+				// HAL_ArpGetMacAddress(i, MulticastAddr, dst_mac);
+				HAL_SendIPPacket(i, output, length, MulticastMac);
 			}
 			last_time = time;
 			printf("Timer\n");
@@ -150,7 +152,7 @@ int main(int argc, char *argv[]) {
 		dst_addr = ((int)packet[16] << 24) + ((int)packet[17] << 16) + ((int)packet[18] << 8) + packet[19];
 
 		#ifdef DEBUG
-			printf("source address:%x\n destination address:%x\n", src_addr, dst_addr);
+			printf("source address:%x\ndestination address:%x\n", src_addr, dst_addr);
 		#endif
 
 		// 2. check whether dst is me
@@ -162,7 +164,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		// TODO: Handle rip multicast address?
-		if(dst_addr == MulticastAddr) {
+		if(dst_addr == reverse(MulticastAddr)) {
 			dst_is_me = true;
 			#ifdef DEBUG
 				printf("multicast address\n");
