@@ -196,8 +196,8 @@ int main(int argc, char *argv[]) {
 							printf("processing request, dst addr == Multicast addr\n");
 						#endif
 						for(int i = 0;i < N_IFACE_ON_BOARD;i++) {
-							if((addrs[i] & 0x00ffffff) == (src_addr & 0x00ffffff)) {
-								resp_src_addr = addrs[i];
+							if((addrs[i] & 0x00ffffff) == (reverse(src_addr) & 0x00ffffff)) {
+								resp_src_addr = reverse(addrs[i]);
 								break;
 							}
 						}
