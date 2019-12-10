@@ -150,6 +150,7 @@ int main(int argc, char *argv[]) {
 		// big endian
 		src_addr = ((int)packet[12] << 24) + ((int)packet[13] << 16) + ((int)packet[14] << 8) + packet[15];
 		dst_addr = ((int)packet[16] << 24) + ((int)packet[17] << 16) + ((int)packet[18] << 8) + packet[19];
+		in_addr_t rev_dst_addr = reverse(dst_addr);
 
 		#ifdef DEBUG
 			printf("source address:%x\ndestination address:%x\n", src_addr, dst_addr);
@@ -158,7 +159,7 @@ int main(int argc, char *argv[]) {
 		// 2. check whether dst is me
 		bool dst_is_me = false;
 		for (int i = 0; i < N_IFACE_ON_BOARD;i++) {
-			if (memcmp(&dst_addr, &addrs[i], sizeof(in_addr_t)) == 0) {
+			if (memcmp(&rev_dst_addr, &addrs[i], sizeof(in_addr_t)) == 0) {
 				dst_is_me = true;
 				break;
 			}
