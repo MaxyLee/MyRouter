@@ -190,24 +190,33 @@ int main(int argc, char *argv[]) {
 				if (rip.command == 1) {
 					// 3a.3 request, ref. RFC2453 3.9.1
 					// only need to respond to whole table requests in the lab
-					in_addr_t resp_src_addr = dst_addr;
-					if(rev_dst_addr == MulticastAddr) {
+					if(rip.numEntries == 1 && rip.entries[0].metric == 16) {
 						#ifdef DEBUG
-							printf("processing request, dst addr == Multicast addr\n");
+							printf("processing request, whole table request\n");
 						#endif
-						for(int i = 0;i < N_IFACE_ON_BOARD;i++) {
-							if((addrs[i] & 0x00ffffff) == (reverse(src_addr) & 0x00ffffff)) {
-								resp_src_addr = reverse(addrs[i]);
-								break;
+						in_addr_t resp_src_addr = dst_addr;
+						if(rev_dst_addr == MulticastAddr) {
+							#ifdef DEBUG
+								printf("processing request, dst addr == Multicast addr\n");
+							#endif
+							for(int i = 0;i < N_IFACE_ON_BOARD;i++) {
+								if((addrs[i] & 0x00ffffff) == (reverse(src_addr) & 0x00ffffff)) {
+									resp_src_addr = reverse(addrs[i]);
+									break;
+								}
 							}
 						}
+						#ifdef DEBUG
+							printf("processing request, resp src addr = %08x\n", resp_src_addr);
+						#endif
+						int length = Response(resp_src_addr, src_addr, output);//what if dst_addr is multicast??????
+						// send it back
+						HAL_SendIPPacket(if_index, output, length, src_mac);
+					} else {
+						#ifdef DEBUG
+							printf("processing request, not whole table request(do nothing)\n");
+						#endif
 					}
-					#ifdef DEBUG
-						printf("processing request, resp src addr = %08x\n", resp_src_addr);
-					#endif
-					int length = Response(resp_src_addr, src_addr, output);//what if dst_addr is multicast??????
-					// send it back
-					HAL_SendIPPacket(if_index, output, length, src_mac);
 				} else {
 					// 3a.2 response, ref. RFC2453 3.9.2
 					// update routing table
