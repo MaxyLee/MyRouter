@@ -159,8 +159,7 @@ int main(int argc, char *argv[]) {
 		in_addr_t rev_dst_addr = reverse(dst_addr);
 
 		#ifdef DEBUG
-			printf("source address:%08x\ndestination address:%08x\n", src_addr, dst_addr);
-			printf("packet[19]:%02x\n",packet[19]);
+			printf("source address:%08x\ndestination address:%08x\nreverse destination address:%08x\n", src_addr, dst_addr, rev_dst_addr);
 		#endif
 
 		// 2. check whether dst is me
@@ -172,7 +171,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		// TODO: Handle rip multicast address?
-		if(dst_addr == reverse(MulticastAddr)) {
+		if(rev_dst_addr == MulticastAddr) {
 			dst_is_me = true;
 			#ifdef DEBUG
 				printf("multicast address\n");
@@ -192,7 +191,7 @@ int main(int argc, char *argv[]) {
 					// 3a.3 request, ref. RFC2453 3.9.1
 					// only need to respond to whole table requests in the lab
 					in_addr_t resp_src_addr = dst_addr;
-					if(dst_addr == MulticastAddr) {
+					if(rev_dst_addr == MulticastAddr) {
 						#ifdef DEBUG
 							printf("processing request, dst addr == Multicast addr\n");
 						#endif
