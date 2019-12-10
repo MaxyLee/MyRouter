@@ -190,7 +190,19 @@ int main(int argc, char *argv[]) {
 				if (rip.command == 1) {
 					// 3a.3 request, ref. RFC2453 3.9.1
 					// only need to respond to whole table requests in the lab
-					int length = Response(dst_addr, src_addr, output);
+					in_addr_t resp_src_addr = dst_addr;
+					if(dst_addr == MulticastAddr) {
+						#ifdef DEBUG
+							printf("processing request, dst addr == Multicast addr\n");
+						#endif
+						for(int i = 0;i < N_IFACE_ON_BOARD) {
+							if((addrs[i] & 0x00ffffff) == (src_addr & 0x00ffffff)) {
+								resp_src_addr = addrs[i];
+								break;
+							}
+						}
+					}
+					int length = Response(resp_src_addr, src_addr, output);//what if dst_addr is multicast??????
 					// send it back
 					HAL_SendIPPacket(if_index, output, length, src_mac);
 				} else {
