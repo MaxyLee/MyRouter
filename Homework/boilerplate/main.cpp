@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 			#endif
 			for (uint32_t i = 0; i < N_IFACE_ON_BOARD;i++) {
 				#ifdef DEBUG
-					printf("multicast from %x\n", addrs[i]);
+					printf("multicast from %08x\n", addrs[i]);
 				#endif
 				int length = Response(reverse(addrs[i]), reverse(MulticastAddr), output);
 				// macaddr_t dst_mac;
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
 		in_addr_t rev_dst_addr = reverse(dst_addr);
 
 		#ifdef DEBUG
-			printf("source address:%x\ndestination address:%x\n", src_addr, dst_addr);
+			printf("source address:%08x\ndestination address:%08x\n", src_addr, dst_addr);
 		#endif
 
 		// 2. check whether dst is me
@@ -258,7 +258,7 @@ int main(int argc, char *argv[]) {
 				} else {
 					// not found
 					// you can drop it
-					printf("ARP not found for %x\n", nexthop);
+					printf("ARP not found for %08x\n", nexthop);
 				}
 			} else {
 				// not found
@@ -268,7 +268,7 @@ int main(int argc, char *argv[]) {
 				HAL_ArpGetMacAddress(dest_if, nexthop, dest_mac);
 				int length = ICMPDestNetworkUnreachable(dst_addr, src_addr);//???
 				HAL_SendIPPacket(dest_if, output, length, dest_mac);
-				printf("IP not found for %x\n", src_addr);
+				printf("IP not found for %08x\n", src_addr);
 			}
 		}
 	}

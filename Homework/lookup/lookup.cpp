@@ -151,10 +151,10 @@ void updateRouterTable(RipEntry entry) {
 }
 
 void DEBUG_printRouterTable() {
-  printf("f**king debuging babe?\n");
+  printf("f**king debugging babe?\n");
   for(int i = 0;i < routers.size();i++) {
     RoutingTableEntry RTEntry = routers.at(i);
     printf("entry %d:\n", i);
-    printf("addr:%x\nlen:%x\nif_index:%x\nnexthop:%x\nmetric:%x\n", RTEntry.addr, RTEntry.len, RTEntry.if_index, RTEntry.nexthop, RTEntry.metric);
+    printf("addr:%08x\nlen:%08x\nif_index:%08x\nnexthop:%08x\nmetric:%08x\n", RTEntry.addr, RTEntry.len, RTEntry.if_index, RTEntry.nexthop, RTEntry.metric);
   }
 }
