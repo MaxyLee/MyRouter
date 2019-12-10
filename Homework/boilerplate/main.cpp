@@ -25,6 +25,7 @@ extern bool disassemble(const uint8_t *packet, uint32_t len, RipPacket *output);
 extern uint32_t assemble(const RipPacket *rip, uint8_t *buffer);
 extern void fillResp(RipPacket* resp);
 extern void updateRouterTable(RipEntry entry);
+extern void DEBUG_printRouterTable();
 
 uint8_t packet[2048];
 uint8_t output[2048];
@@ -92,6 +93,10 @@ int main(int argc, char *argv[]) {
 			last_time = time;
 			printf("Timer\n");
 		}
+
+		#ifdef DEBUG
+			DEBUG_printRouterTable();
+		#endif
 
 		int mask = (1 << N_IFACE_ON_BOARD) - 1;
 		macaddr_t src_mac;
