@@ -195,7 +195,7 @@ int main(int argc, char *argv[]) {
 						#ifdef DEBUG
 							printf("processing request, dst addr == Multicast addr\n");
 						#endif
-						for(int i = 0;i < N_IFACE_ON_BOARD) {
+						for(int i = 0;i < N_IFACE_ON_BOARD;i++) {
 							if((addrs[i] & 0x00ffffff) == (src_addr & 0x00ffffff)) {
 								resp_src_addr = addrs[i];
 								break;
