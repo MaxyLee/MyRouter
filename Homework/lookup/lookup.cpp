@@ -113,7 +113,7 @@ void fillResp(RipPacket *resp) {
     uint32_t len = routers.at(i).len;
     uint32_t mask = 0;
     for(int j = 0;j < len;j++)
-      mask = (mask >> 1) + 0x80000000;// big endian
+      mask = (mask << 1) + 0x1;// big endian
     resp->entries[i].mask = mask;
     resp->entries[i].nexthop = routers.at(i).nexthop;
     resp->entries[i].metric = routers.at(i).metric;//not sure
