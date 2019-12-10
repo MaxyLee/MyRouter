@@ -155,7 +155,7 @@ void DEBUG_printRouterTable() {
   for(int i = 0;i < routers.size();i++) {
     RoutingTableEntry RTEntry = routers.at(i);
     printf("entry %d:\n", i);
-    printf("addr:%08x\nlen:%08x\nif_index:%08x\nnexthop:%08x\nmetric:%08x\n", RTEntry.addr, RTEntry.len, RTEntry.if_index, RTEntry.nexthop, RTEntry.metric);
+    printf("addr:%08x\nlen:%08x\nif_index:%08x\nnexthop:%08x\nmetric:%08x\n--------------------------------\n", RTEntry.addr, RTEntry.len, RTEntry.if_index, RTEntry.nexthop, RTEntry.metric);
   }
   printf("#########################################\n");
 }

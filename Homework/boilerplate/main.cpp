@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
 
 		if (dst_is_me) {
 			#ifdef DEBUG
-			printf("destination is me!\n");
+				printf("destination is me!\n");
 			#endif
 			// TODO: RIP?
 			// 3a.1
@@ -226,6 +226,10 @@ int main(int argc, char *argv[]) {
 						updateRouterTable(entry);
 					}
 				}
+			} else {
+				#ifdef DEBUG
+					printf("disassemble failed\n");
+				#endif
 			} 
 		} else { //dst_is_me
 			#ifdef DEBUG
