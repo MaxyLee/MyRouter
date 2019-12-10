@@ -190,6 +190,9 @@ int main(int argc, char *argv[]) {
 				if (rip.command == 1) {
 					// 3a.3 request, ref. RFC2453 3.9.1
 					// only need to respond to whole table requests in the lab
+					#ifdef DEBUG
+						printf("processing request, numofentries:%d\n", rip.numEntries);
+					#endif
 					if(rip.numEntries == 1 && rip.entries[0].metric == 16) {
 						#ifdef DEBUG
 							printf("processing request, whole table request\n");
