@@ -202,6 +202,9 @@ int main(int argc, char *argv[]) {
 							}
 						}
 					}
+					#ifdef DEBUG
+						printf("processing request, resp src addr = %08x\n", resp_src_addr);
+					#endif
 					int length = Response(resp_src_addr, src_addr, output);//what if dst_addr is multicast??????
 					// send it back
 					HAL_SendIPPacket(if_index, output, length, src_mac);
