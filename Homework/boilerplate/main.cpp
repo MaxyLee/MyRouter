@@ -191,9 +191,9 @@ int main(int argc, char *argv[]) {
 					// 3a.3 request, ref. RFC2453 3.9.1
 					// only need to respond to whole table requests in the lab
 					#ifdef DEBUG
-						printf("processing request, numofentries:%d\nmetric:%d", rip.numEntries, rip.entries[0].metric);
+						printf("processing request, numofentries:%d\nmetric:%d", rip.numEntries, reverse(rip.entries[0].metric));
 					#endif
-					if(rip.numEntries == 1 && rip.entries[0].metric == 16) {
+					if(rip.numEntries == 1 && reverse(rip.entries[0].metric) == 16) {
 						#ifdef DEBUG
 							printf("processing request, whole table request\n");
 						#endif
