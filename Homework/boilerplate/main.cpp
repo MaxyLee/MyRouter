@@ -92,11 +92,10 @@ int main(int argc, char *argv[]) {
 			}
 			last_time = time;
 			printf("Timer\n");
+			#ifdef DEBUG
+				DEBUG_printRouterTable();
+			#endif
 		}
-
-		#ifdef DEBUG
-			DEBUG_printRouterTable();
-		#endif
 
 		int mask = (1 << N_IFACE_ON_BOARD) - 1;
 		macaddr_t src_mac;
@@ -149,6 +148,8 @@ int main(int argc, char *argv[]) {
 		#ifdef DEBUG
 			printf("IP valid!\n");
 		#endif
+
+
 
 		in_addr_t src_addr, dst_addr;
 		// extract src_addr and dst_addr from packet
