@@ -130,7 +130,7 @@ void updateRouterTable(RipEntry entry, uint32_t if_index) {
   while((mask & 1) != 0) {
     len++;
     mask >>= 1;
-    printf("update, sr mask:%08x\n", mask);
+    // printf("update, sr mask:%08x\n", mask);
   }
   printf("update, len:%d\n", len);
   RTEntry.len = len;
@@ -156,7 +156,7 @@ void DEBUG_printRouterTable() {
   for(int i = 0;i < routers.size();i++) {
     RoutingTableEntry RTEntry = routers.at(i);
     printf("entry %d:\n", i);
-    printf("addr:%08x\nlen:%08x\nif_index:%08x\nnexthop:%08x\nmetric:%08x\n--------------------------------\n", RTEntry.addr, RTEntry.len, RTEntry.if_index, RTEntry.nexthop, RTEntry.metric);
+    printf("addr:%08x\nlen:%d\nif_index:%d\nnexthop:%08x\nmetric:%08x\n--------------------------------\n", RTEntry.addr, RTEntry.len, RTEntry.if_index, RTEntry.nexthop, RTEntry.metric);
   }
   printf("#########################################\n");
 }
