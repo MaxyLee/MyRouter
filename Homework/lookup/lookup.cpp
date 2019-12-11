@@ -155,6 +155,7 @@ void updateRouterTable(RipEntry entry, uint32_t if_index) {
     //not exist
     //but why do not metric add 1 ???
     printf("update, not exist\n");
+    RTEntry.metric++;
     update(true, RTEntry);
   }
 }
