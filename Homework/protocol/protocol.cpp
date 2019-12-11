@@ -148,10 +148,10 @@ uint32_t assemble(const RipPacket *rip, uint8_t *buffer) {
 
     //metric
     //endian problem???
-    buffer[20 + ripnum] = entry.metric >> 24;
-    buffer[21 + ripnum] = entry.metric >> 16;
-    buffer[22 + ripnum] = entry.metric >> 8;
-    buffer[23 + ripnum] = entry.metric;
+    buffer[23 + ripnum] = entry.metric >> 24;
+    buffer[22 + ripnum] = entry.metric >> 16;
+    buffer[21 + ripnum] = entry.metric >> 8;
+    buffer[20 + ripnum] = entry.metric;
     // printf("assemble metric:%x\n", entry.metric);
   }
   return 4 + 20 * rip->numEntries;
