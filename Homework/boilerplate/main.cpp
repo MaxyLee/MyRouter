@@ -238,10 +238,10 @@ int main(int argc, char *argv[]) {
 						uint32_t queryNexthop;
 						uint32_t queryMetric;
 						bool exist = query(entry.addr, &queryNexthop, &queryMetric);
-						if(newMetirc > 16 && src_addr != 0x0103a8c0 && src_addr != 0x0204a8c0 && entry.nexthop == queryNexthop) {
+						if(newMetirc > 16 && src_addr != 0xc0a80301 && src_addr != 0xc0a80402 && entry.nexthop == queryNexthop) {
 							//delete this route
 							#ifdef DEBUG
-								printf("processing response, new Metric > 16\n");
+								printf("processing response, delete\n");
 							#endif
 							uint32_t len = 32;
 							uint32_t mask = entry.mask;
