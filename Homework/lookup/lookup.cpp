@@ -120,9 +120,7 @@ void fillResp(RipPacket *resp) {
   }
 }
 
-void updateRouterTable(RipEntry entry) {
-  // uint32_t* nexthop = nullptr;
-  // uint32_t* if_index = nullptr;
+void updateRouterTable(RipEntry entry, uint32_t if_index) {
   RoutingTableEntry RTEntry;
   RTEntry.addr = entry.addr;
   RTEntry.nexthop = entry.nexthop;
@@ -133,7 +131,7 @@ void updateRouterTable(RipEntry entry) {
     mask >> 1;
   }
   RTEntry.len = len;
-  // RTEntry.if_index = ???
+  RTEntry.if_index = if_index;
   RTEntry.metric = entry.metric;
 
   int index = getIndex(entry.addr, len);

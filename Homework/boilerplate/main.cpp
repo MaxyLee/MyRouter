@@ -24,7 +24,7 @@ extern bool forward(uint8_t *packet, size_t len);
 extern bool disassemble(const uint8_t *packet, uint32_t len, RipPacket *output);
 extern uint32_t assemble(const RipPacket *rip, uint8_t *buffer);
 extern void fillResp(RipPacket* resp);
-extern void updateRouterTable(RipEntry entry);
+extern void updateRouterTable(RipEntry entry, uint32_t if_index);
 extern void DEBUG_printRouterTable();
 
 uint8_t packet[2048];
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
 		in_addr_t rev_dst_addr = reverse(dst_addr);
 
 		#ifdef DEBUG
-			printf("source address:%08x\ndestination address:%08x\nreverse destination address:%08x\n", src_addr, dst_addr, rev_dst_addr);
+			printf("source address:%08x\ndestination address:%08x\nreverse destination address:%08x\nif_index:%d\n", src_addr, dst_addr, rev_dst_addr, if_index);
 		#endif
 
 		// 2. check whether dst is me
@@ -245,15 +245,15 @@ int main(int argc, char *argv[]) {
 							uint32_t len = 32;
 							uint32_t mask = entry.mask;
 							while((mask & 1) == 0) {
-							mask >> 1;
-							len--;
+								mask >> 1;
+								len--;
 							}
 							RoutingTableEntry RTEntry = {
-							.addr = entry.addr, // big endian
-							.len = len, // small endian
-							.if_index = if_index, // small endian /////////////////////////////////////////////////////idk
-							.nexthop = entry.nexthop, // big endian, means direct
-							.metric = entry.metric
+								.addr = entry.addr, // big endian
+								.len = len, // small endian
+								.if_index = if_index, // small endian /////////////////////////////////////////////////////idk
+								.nexthop = entry.nexthop, // big endian, means direct
+								.metric = entry.metric
 							};
 							update(false, RTEntry);
 							continue;
@@ -261,7 +261,7 @@ int main(int argc, char *argv[]) {
 						#ifdef DEBUG
 							printf("processing response, updating routing table\n");
 						#endif
-						updateRouterTable(entry);
+						updateRouterTable(entry, if_index);
 						#ifdef DEBUG
 							printf("processing response, routing table updated\n");
 						#endif
