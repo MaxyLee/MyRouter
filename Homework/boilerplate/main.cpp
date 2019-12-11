@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
 					#ifdef DEBUG
 						printf("processing request, numofentries:%d\nmetric:%d\n", rip.numEntries, rip.entries[0].metric);
 					#endif
-					if(rip.numEntries == 1 && reverse(rip.entries[0].metric) == 16) {
+					if(rip.numEntries == 1 && rip.entries[0].metric == 16) {
 						#ifdef DEBUG
 							printf("processing request, whole table request\n");
 						#endif
