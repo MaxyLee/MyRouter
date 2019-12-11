@@ -82,7 +82,7 @@ bool disassemble(const uint8_t *packet, uint32_t len, RipPacket *output) {
 
           output->entries[numEntry].addr = ((int)packet[39 + ripnum] << 24) + ((int)packet[38 + ripnum] << 16) + ((int)packet[37 + ripnum] << 8) + packet[36 + ripnum];
           output->entries[numEntry].mask = ((int)packet[43 + ripnum] << 24) + ((int)packet[42 + ripnum] << 16) + ((int)packet[41 + ripnum] << 8) + packet[40 + ripnum];;
-          output->entries[numEntry].metric = ((int)packet[51 + ripnum] << 24) + ((int)packet[50 + ripnum] << 16) + ((int)packet[49 + ripnum] << 8) + packet[48 + ripnum];
+          output->entries[numEntry].metric = ((int)packet[48 + ripnum] << 24) + ((int)packet[49 + ripnum] << 16) + ((int)packet[50 + ripnum] << 8) + packet[51 + ripnum];
           output->entries[numEntry].nexthop = ((int)packet[47 + ripnum] << 24) + ((int)packet[46 + ripnum] << 16) + ((int)packet[45 + ripnum] << 8) + packet[44 + ripnum];
           output->numEntries++; 
         } else
@@ -148,10 +148,10 @@ uint32_t assemble(const RipPacket *rip, uint8_t *buffer) {
 
     //metric
     //endian problem???
-    buffer[23 + ripnum] = entry.metric >> 24;
-    buffer[22 + ripnum] = entry.metric >> 16;
-    buffer[21 + ripnum] = entry.metric >> 8;
-    buffer[20 + ripnum] = entry.metric;
+    buffer[20 + ripnum] = entry.metric >> 24;
+    buffer[21 + ripnum] = entry.metric >> 16;
+    buffer[22 + ripnum] = entry.metric >> 8;
+    buffer[23 + ripnum] = entry.metric;
     // printf("assemble metric:%x\n", entry.metric);
   }
   return 4 + 20 * rip->numEntries;
