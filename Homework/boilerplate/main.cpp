@@ -285,7 +285,7 @@ int main(int argc, char *argv[]) {
 			// forward
 			// beware of endianness
 			uint32_t nexthop, dest_if;
-			if (query(dst_addr, &nexthop, &dest_if)) {
+			if (query(reverse(dst_addr), &nexthop, &dest_if)) {
 				// found
 				#ifdef DEBUG
 					printf("forward, found\n");
