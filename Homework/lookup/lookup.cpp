@@ -140,13 +140,16 @@ void updateRouterTable(RipEntry entry, uint32_t if_index) {
   int index = getIndex(entry.addr, len);
   if(index >= 0) {
     //exist
+    printf("update, exist\n");
     if(RTEntry.metric + 1 < routers.at(index).metric) {
+      printf("update, newMetric < metric\n");
       RTEntry.metric++;
       update(true, RTEntry);
     }
   } else {
     //not exist
     //but why do not metric add 1 ???
+    printf("update, not exist\n");
     update(true, RTEntry);
   }
 }
