@@ -293,7 +293,10 @@ int main(int argc, char *argv[]) {
 				macaddr_t dest_mac;
 				// direct routing
 				if (nexthop == 0) {
-					nexthop = dst_addr;
+					#ifdef DEBUG
+						printf("forward, next hop == 0, dst addr =%08x\n", dst_addr);
+					#endif
+					nexthop = reverse(dst_addr);
 				}
 				if (HAL_ArpGetMacAddress(dest_if, nexthop, dest_mac) == 0) {
 					// found
