@@ -258,7 +258,13 @@ int main(int argc, char *argv[]) {
 							update(false, RTEntry);
 							continue;
 						}
+						#ifdef DEBUG
+							printf("processing response, updating routing table\n");
+						#endif
 						updateRouterTable(entry);
+						#ifdef DEBUG
+							printf("processing response, routing table updated\n");
+						#endif
 					}
 				}
 			} else {
