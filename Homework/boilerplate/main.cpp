@@ -26,6 +26,7 @@ extern uint32_t assemble(const RipPacket *rip, uint8_t *buffer);
 extern void fillResp(RipPacket* resp, uint32_t dst_addr);
 extern void updateRouterTable(RipEntry entry, uint32_t if_index);
 extern void DEBUG_printRouterTable();
+extern int getIndex(uint32_t addr, uint32_t len);
 
 uint8_t packet[2048];
 uint8_t output[2048];
@@ -261,6 +262,12 @@ int main(int argc, char *argv[]) {
 							#ifdef DEBUG
 								printf("processing response, update routing table\n");
 							#endif
+							if(entry.nexthop == 0) {
+								#ifdef DEBUG
+									printf("processing response, next hop == 0, src addr = %08x\n", src_addr);
+								#endif
+								entry.nexthop = src_addr;
+							}
 							updateRouterTable(entry, if_index);
 						}
 					}
@@ -280,6 +287,9 @@ int main(int argc, char *argv[]) {
 			uint32_t nexthop, dest_if;
 			if (query(dst_addr, &nexthop, &dest_if)) {
 				// found
+				#ifdef DEBUG
+					printf("forward, found\n");
+				#endif
 				macaddr_t dest_mac;
 				// direct routing
 				if (nexthop == 0) {
@@ -294,6 +304,9 @@ int main(int argc, char *argv[]) {
 					uint8_t TTL = output[8];
 					if(TTL == 0) {
 						//return a ICMP Time Exceeded to sender 
+						#ifdef DEBUG
+							printf("forward, TTL = 0\n");
+						#endif
 						int length = ICMPTimeExceeded(dst_addr, src_addr);
 						HAL_SendIPPacket(dest_if, output, length, dest_mac);
 						continue;
