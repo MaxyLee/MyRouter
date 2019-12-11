@@ -263,10 +263,10 @@ int main(int argc, char *argv[]) {
 								printf("processing response, update routing table\n");
 							#endif
 							if(entry.nexthop == 0) {
-								#ifdef DEBUG
-									printf("processing response, next hop == 0, src addr = %08x\n", src_addr);
-								#endif
 								entry.nexthop = src_addr;
+								#ifdef DEBUG
+									printf("processing response, next hop == 0, new next hop = %08x\n", entry.nexthop);
+								#endif
 							}
 							updateRouterTable(entry, if_index);
 						}
