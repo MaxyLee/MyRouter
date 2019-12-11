@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
 					// 3a.3 request, ref. RFC2453 3.9.1
 					// only need to respond to whole table requests in the lab
 					#ifdef DEBUG
-						printf("processing request, numofentries:%d\nmetric:%d\n", rip.numEntries, reverse(rip.entries[0].metric));
+						printf("processing request, numofentries:%d\nmetric:%d\n", rip.numEntries, rip.entries[0].metric);
 					#endif
 					if(rip.numEntries == 1 && reverse(rip.entries[0].metric) == 16) {
 						#ifdef DEBUG
@@ -474,7 +474,7 @@ int ICMPDestNetworkUnreachable(in_addr_t src_addr, in_addr_t dst_addr) {
 
 int Response(in_addr_t src_addr, in_addr_t dst_addr, uint8_t* pac) {
 	RipPacket resp;
-	fillResp(&resp, dst_addr);
+	fillResp(&resp, reverse(dst_addr));
 	// UDP
 	// port = 520
 	// source port

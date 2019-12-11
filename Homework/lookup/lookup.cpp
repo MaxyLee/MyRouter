@@ -110,7 +110,7 @@ void fillResp(RipPacket *resp, uint32_t dst_addr) {
   resp->command = 2;
   int cnt = 0;
   for(int i = 0;i < routers.size();i++){
-    if((dst_addr & 0xffffff00) != (routers.at(i).addr & 0xffffff00)) {
+    if((dst_addr & 0x00ffffff) != routers.at(i).addr) {
       printf("fill resp, dst_addr:%08x  addr:%08x\n", dst_addr, routers.at(i).addr);
       resp->entries[cnt].addr = routers.at(i).addr;
       uint32_t len = routers.at(i).len;
