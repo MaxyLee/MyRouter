@@ -129,7 +129,7 @@ void updateRouterTable(RipEntry entry, uint32_t if_index) {
   printf("update, mask:%08x\n", mask);
   while((mask & 1) != 0) {
     len++;
-    mask >> 1;
+    mask >>= 1;
     printf("update, sr mask:%08x\n", mask);
   }
   printf("update, len:%d\n", len);

@@ -242,16 +242,16 @@ int main(int argc, char *argv[]) {
 							#ifdef DEBUG
 								printf("processing response, newMetric > 16\n");
 							#endif
-							uint32_t len = 32;
+							uint32_t len = 32;//why 32??????????????????????????????????
 							uint32_t mask = entry.mask;
 							while((mask & 1) == 0) {
-								mask >> 1;
+								mask >>= 1;
 								len--;
 							}
 							RoutingTableEntry RTEntry = {
 								.addr = entry.addr, // big endian
 								.len = len, // small endian
-								.if_index = if_index, // small endian /////////////////////////////////////////////////////idk
+								.if_index = if_index, // small endian 
 								.nexthop = entry.nexthop, // big endian, means direct
 								.metric = entry.metric
 							};
