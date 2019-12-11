@@ -105,18 +105,24 @@ bool query(uint32_t addr, uint32_t *nexthop, uint32_t *if_index) {
   return true;
 }
 
-void fillResp(RipPacket *resp) {
+void fillResp(RipPacket *resp, uint32_t dst_addr) {
   resp->numEntries = routers.size();
   resp->command = 2;
+  int cnt = 0;
   for(int i = 0;i < routers.size();i++){
-    resp->entries[i].addr = routers.at(i).addr;
-    uint32_t len = routers.at(i).len;
-    uint32_t mask = 0;
-    for(int j = 0;j < len;j++)
-      mask = (mask << 1) + 0x1;// big endian
-    resp->entries[i].mask = mask;
-    resp->entries[i].nexthop = routers.at(i).nexthop;
-    resp->entries[i].metric = routers.at(i).metric;//not sure
+    if((dst_addr & 0xffffff00) != (routers.at(i).addr & 0xffffff00)) {
+      printf("fill resp, dst_addr:%08x  addr:%08x\n", dst_addr, routers.at(i).addr);
+      resp->entries[cnt].addr = routers.at(i).addr;
+      uint32_t len = routers.at(i).len;
+      uint32_t mask = 0;
+      for(int j = 0;j < len;j++)
+        mask = (mask << 1) + 0x1;// big endian
+      resp->entries[cnt].mask = mask;
+      resp->entries[cnt].nexthop = routers.at(i).nexthop;
+      resp->entries[cnt].metric = routers.at(i).metric;//not sure
+      cnt++;
+    }
+    
   }
 }
 
