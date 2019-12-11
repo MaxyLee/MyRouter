@@ -278,7 +278,7 @@ int main(int argc, char *argv[]) {
 			// forward
 			// beware of endianness
 			uint32_t nexthop, dest_if;
-			if (query(src_addr, &nexthop, &dest_if)) {
+			if (query(dst_addr, &nexthop, &dest_if)) {
 				// found
 				macaddr_t dest_mac;
 				// direct routing
@@ -345,6 +345,7 @@ void getIPChecksum(uint8_t* pac) {
 
 
 int getUDPChecksum(uint8_t* pac) {
+	return 0;////fuck UDP checksum
 	int UDPchecksum = 0;
 	uint16_t UDPLength = (((int)pac[24]) << 8) + pac[25];
 	for(int i = 12;i < 20;i++) {
@@ -367,8 +368,7 @@ int getUDPChecksum(uint8_t* pac) {
 	UDPchecksum = (UDPchecksum >> 16) + (UDPchecksum & 0xffff);
 	UDPchecksum += (UDPchecksum >> 16);
 	UDPchecksum = ~UDPchecksum;
-	// return UDPchecksum;
-	return 0;//fuck UDP checksum
+	return UDPchecksum;
 }
 
 
