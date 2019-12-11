@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 	uint64_t last_time = 0;
 	while (1) {
 		uint64_t time = HAL_GetTicks();
-		if (time > last_time + 30 * 1000) {
+		if (time > last_time + 5 * 1000) {
 			// What to do?
 			// send complete routing table to every interface
 			// ref. RFC2453 3.8
@@ -86,8 +86,6 @@ int main(int argc, char *argv[]) {
 					printf("multicast from %08x\n", addrs[i]);
 				#endif
 				int length = Response(reverse(addrs[i]), reverse(MulticastAddr), output);
-				// macaddr_t dst_mac;
-				// HAL_ArpGetMacAddress(i, MulticastAddr, dst_mac);
 				HAL_SendIPPacket(i, output, length, MulticastMac);
 			}
 			last_time = time;
@@ -369,7 +367,8 @@ int getUDPChecksum(uint8_t* pac) {
 	UDPchecksum = (UDPchecksum >> 16) + (UDPchecksum & 0xffff);
 	UDPchecksum += (UDPchecksum >> 16);
 	UDPchecksum = ~UDPchecksum;
-	return UDPchecksum;
+	// return UDPchecksum;
+	return 0;//fuck UDP checksum
 }
 
 
