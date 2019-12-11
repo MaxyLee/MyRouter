@@ -106,7 +106,6 @@ bool query(uint32_t addr, uint32_t *nexthop, uint32_t *if_index) {
 }
 
 void fillResp(RipPacket *resp, uint32_t dst_addr) {
-  resp->numEntries = routers.size();
   resp->command = 2;
   int cnt = 0;
   for(int i = 0;i < routers.size();i++){
@@ -122,8 +121,8 @@ void fillResp(RipPacket *resp, uint32_t dst_addr) {
       resp->entries[cnt].metric = routers.at(i).metric;//not sure
       cnt++;
     }
-    
   }
+  resp->numEntries = cnt;
 }
 
 void updateRouterTable(RipEntry entry, uint32_t if_index) {
