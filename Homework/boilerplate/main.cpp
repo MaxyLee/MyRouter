@@ -235,12 +235,15 @@ int main(int argc, char *argv[]) {
 						#ifdef DEBUG
 							printf("processing response, new Metric:%d\n", newMetirc);
 						#endif
-						if(newMetirc >= 16) {
+						uint32_t queryNexthop;
+						uint32_t queryMetric;
+						bool exist = query(entry.addr, &queryNexthop, &queryMetric);
+						if(newMetirc > 16 && src_addr != 0x0103a8c0 && src_addr != 0x0204a8c0 && entry.nexthop == queryNexthop) {
 							//delete this route
 							#ifdef DEBUG
-								printf("processing response, newMetric > 16\n");
+								printf("processing response, new Metric > 16\n");
 							#endif
-							uint32_t len = 32;//why 32??????????????????????????????????
+							uint32_t len = 32;
 							uint32_t mask = entry.mask;
 							while((mask & 1) == 0) {
 								mask >>= 1;
@@ -254,15 +257,12 @@ int main(int argc, char *argv[]) {
 								.metric = entry.metric
 							};
 							update(false, RTEntry);
-							continue;
+						} else {
+							#ifdef DEBUG
+								printf("processing response, update routing table\n");
+							#endif
+							updateRouterTable(entry, if_index);
 						}
-						#ifdef DEBUG
-							printf("processing response, updating routing table\n");
-						#endif
-						updateRouterTable(entry, if_index);
-						#ifdef DEBUG
-							printf("processing response, routing table updated\n");
-						#endif
 					}
 				}
 			} else {
