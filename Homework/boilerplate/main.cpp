@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
 					// 3a.3 request, ref. RFC2453 3.9.1
 					// only need to respond to whole table requests in the lab
 					#ifdef DEBUG
-						printf("processing request, numofentries:%d\nmetric:%d", rip.numEntries, reverse(rip.entries[0].metric));
+						printf("processing request, numofentries:%d\nmetric:%d\n", rip.numEntries, reverse(rip.entries[0].metric));
 					#endif
 					if(rip.numEntries == 1 && reverse(rip.entries[0].metric) == 16) {
 						#ifdef DEBUG
@@ -228,11 +228,20 @@ int main(int argc, char *argv[]) {
 					// what is missing from RoutingTableEntry?
 					// TODO: use query and update
 					// triggered updates? ref. RFC2453 3.10.1
+					#ifdef DEBUG
+						printf("processing response, num of entries:%d\n", rip.numEntries);
+					#endif
 					for(int i = 0;i < rip.numEntries;i++) {
 						RipEntry entry = rip.entries[i];
 						uint32_t newMetirc = entry.metric + 1;
+						#ifdef DEBUG
+							printf("processing response, new Metric:%d\n", newMetirc);
+						#endif
 						if(newMetirc >= 16) {
 							//delete this route
+							#ifdef DEBUG
+								printf("processing response, newMetric > 16\n");
+							#endif
 							uint32_t len = 32;
 							uint32_t mask = entry.mask;
 							while((mask & 1) == 0) {
@@ -247,7 +256,6 @@ int main(int argc, char *argv[]) {
 							.metric = entry.metric
 							};
 							update(false, RTEntry);
-							// idk how to print 
 							continue;
 						}
 						updateRouterTable(entry);
