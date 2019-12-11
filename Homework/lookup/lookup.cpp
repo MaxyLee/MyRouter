@@ -126,10 +126,12 @@ void updateRouterTable(RipEntry entry, uint32_t if_index) {
   RTEntry.nexthop = entry.nexthop;
   uint32_t mask = entry.mask;
   uint32_t len = 0;
+  printf("update, mask:%08x\n", mask);
   while((mask & 1) != 0) {
     len++;
     mask >> 1;
   }
+  printf("update, len:%d\n", len);
   RTEntry.len = len;
   RTEntry.if_index = if_index;
   RTEntry.metric = entry.metric;
