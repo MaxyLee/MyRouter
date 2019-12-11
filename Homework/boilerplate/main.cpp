@@ -263,7 +263,7 @@ int main(int argc, char *argv[]) {
 								printf("processing response, update routing table\n");
 							#endif
 							if(entry.nexthop == 0) {
-								entry.nexthop = src_addr;
+								entry.nexthop = reverse(src_addr);
 								#ifdef DEBUG
 									printf("processing response, next hop == 0, new next hop = %08x\n", entry.nexthop);
 								#endif
