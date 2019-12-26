@@ -15,7 +15,6 @@
 #define ICMPtypeDestNetworkUnreachable 3
 #define ICMPcodeDestNetworkUnreachable 0
 #define MulticastAddr 0x090000e0
-//e0000009
 
 extern bool validateIPChecksum(uint8_t *packet, size_t len);
 extern void update(bool insert, RoutingTableEntry entry);
@@ -23,7 +22,7 @@ extern bool query(uint32_t addr, uint32_t *nexthop, uint32_t *if_index);
 extern bool forward(uint8_t *packet, size_t len);
 extern bool disassemble(const uint8_t *packet, uint32_t len, RipPacket *output);
 extern uint32_t assemble(const RipPacket *rip, uint8_t *buffer);
-extern void fillResp(RipPacket* resp, uint32_t dst_addr);
+extern void fillResp(RipPacket* resp, uint32_t dst_addr, uint32_t if_index);
 extern void updateRouterTable(RipEntry entry, uint32_t if_index);
 extern void DEBUG_printRouterTable();
 extern int getIndex(uint32_t addr, uint32_t len);
@@ -44,7 +43,7 @@ int getUDPChecksum(uint8_t* pac);
 void IPHeader(in_addr_t src_addr, in_addr_t dst_addr, uint16_t totalLength, uint8_t protocol, uint8_t* pac);
 int ICMPTimeExceeded(in_addr_t src_addr, in_addr_t dst_addr);
 int ICMPDestNetworkUnreachable(in_addr_t src_addr, in_addr_t dst_addr);
-int Response(in_addr_t src_addr, in_addr_t dst_addr, uint8_t* pac);
+int Response(in_addr_t src_addr, in_addr_t dst_addr, uint8_t* pac, uint32_t if_index);
 uint32_t reverse(uint32_t addr);
 
 int main(int argc, char *argv[]) {
@@ -86,7 +85,7 @@ int main(int argc, char *argv[]) {
 				#ifdef DEBUG
 					printf("multicast from %08x\n", addrs[i]);
 				#endif
-				int length = Response(reverse(addrs[i]), reverse(MulticastAddr), output);
+				int length = Response(reverse(addrs[i]), reverse(MulticastAddr), output, i);
 				HAL_SendIPPacket(i, output, length, MulticastMac);
 			}
 			last_time = time;
@@ -211,7 +210,7 @@ int main(int argc, char *argv[]) {
 						#ifdef DEBUG
 							printf("processing request, resp src addr = %08x\n", resp_src_addr);
 						#endif
-						int length = Response(resp_src_addr, src_addr, output);//what if dst_addr is multicast??????
+						int length = Response(resp_src_addr, src_addr, output, if_index);//what if dst_addr is multicast??????
 						// send it back
 						HAL_SendIPPacket(if_index, output, length, src_mac);
 					} else {
@@ -487,9 +486,9 @@ int ICMPDestNetworkUnreachable(in_addr_t src_addr, in_addr_t dst_addr) {
 }
 
 
-int Response(in_addr_t src_addr, in_addr_t dst_addr, uint8_t* pac) {
+int Response(in_addr_t src_addr, in_addr_t dst_addr, uint8_t* pac, uint32_t if_index) {
 	RipPacket resp;
-	fillResp(&resp, reverse(dst_addr));
+	fillResp(&resp, reverse(dst_addr), if_index);
 	// UDP
 	// port = 520
 	// source port

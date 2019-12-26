@@ -105,11 +105,11 @@ bool query(uint32_t addr, uint32_t *nexthop, uint32_t *if_index) {
   return true;
 }
 
-void fillResp(RipPacket *resp, uint32_t dst_addr) {
+void fillResp(RipPacket *resp, uint32_t dst_addr, uint32_t if_index) {
   resp->command = 2;
   int cnt = 0;
   for(int i = 0;i < routers.size();i++){
-    if((dst_addr & 0x00ffffff) != routers.at(i).addr) {
+    if((dst_addr & 0x00ffffff) != routers.at(i).addr && if_index != routers.at(i).if_index) {
       printf("fill resp, dst_addr:%08x  addr:%08x\n", dst_addr, routers.at(i).addr);
       resp->entries[cnt].addr = routers.at(i).addr;
       uint32_t len = routers.at(i).len;
